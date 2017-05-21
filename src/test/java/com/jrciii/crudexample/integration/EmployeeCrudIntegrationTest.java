@@ -38,60 +38,73 @@ import com.jrciii.crudexample.domain.State;
 import com.jrciii.crudexample.repository.EmployeeRepository;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment=WebEnvironment.MOCK)
+@SpringBootTest(webEnvironment = WebEnvironment.MOCK)
 public class EmployeeCrudIntegrationTest {
-    @Configuration
-    @EnableAutoConfiguration
-    @EnableMongoRepositories(basePackageClasses={EmployeeRepository.class})
-    @ComponentScan(basePackageClasses={EmployeeController.class})
-    @EnableWebMvc
-    public static class Config {
+	@Configuration
+	@EnableAutoConfiguration
+	@EnableMongoRepositories(basePackageClasses = { EmployeeRepository.class })
+	@ComponentScan(basePackageClasses = { EmployeeController.class })
+	@EnableWebMvc
+	public static class Config {
 
-    }
-    
+	}
+
 	@Autowired
 	private WebApplicationContext wac;
 	private MockMvc mockMvc;
-    
-    @Before
-    public void setup() {
-    	this.mockMvc = webAppContextSetup(wac).build();
-    }
-	
+
+	@Before
+	public void setup() {
+		this.mockMvc = webAppContextSetup(wac).build();
+	}
+
 	@Test
 	public void testMongoIntegration() throws Exception {
 		ObjectMapper mapper = new ObjectMapper();
-		Employee employee = new Employee(null, "John", "Doe", "M", "test@test.com", "5555555555", EmployeePositionCategory.EXECUTIVE, new Date(), "123 Mystery Hut", "", "City", State.ALABAMA, 33333, true);
-		
-		//Post
-		MvcResult result = mockMvc.perform(post("/api/employee").contentType("application/json").accept("application/json").content(mapper.writeValueAsString(employee))).andDo(print()).andExpect(status().isOk()).andReturn();
-		Employee savedEmployee = mapper.readValue(result.getResponse().getContentAsString(),Employee.class);
+		Employee employee = new Employee(null, "John", "Doe", "M", "test@test.com", "5555555555",
+				EmployeePositionCategory.EXECUTIVE, new Date(), "123 Mystery Hut", "", "City", State.ALABAMA, 33333,
+				true);
+
+		// Post
+		MvcResult result = mockMvc
+				.perform(post("/api/employee").contentType("application/json").accept("application/json")
+						.content(mapper.writeValueAsString(employee)))
+				.andDo(print()).andExpect(status().isOk()).andReturn();
+		Employee savedEmployee = mapper.readValue(result.getResponse().getContentAsString(), Employee.class);
 		assertNotNull(savedEmployee.id);
 		String id = savedEmployee.id;
 		savedEmployee.id = null;
-		assertEquals(employee,savedEmployee);
-		
+		assertEquals(employee, savedEmployee);
+
 		// Put
 		employee.addressTwo = "#2";
-		result = mockMvc.perform(put("/api/employee/" + id).contentType("application/json").accept("application/json").content(mapper.writeValueAsString(employee))).andDo(print()).andExpect(status().isOk()).andReturn();
-		savedEmployee = mapper.readValue(result.getResponse().getContentAsString(),Employee.class);
+		result = mockMvc
+				.perform(put("/api/employee/" + id).contentType("application/json").accept("application/json")
+						.content(mapper.writeValueAsString(employee)))
+				.andDo(print()).andExpect(status().isOk()).andReturn();
+		savedEmployee = mapper.readValue(result.getResponse().getContentAsString(), Employee.class);
 		assertNotNull(savedEmployee.id);
 		assertEquals(id, savedEmployee.id);
 
 		// Get all
-		result = mockMvc.perform(get("/api/employee").contentType("application/json").accept("application/json").content(mapper.writeValueAsString(employee))).andDo(print()).andExpect(status().isOk()).andReturn();
-		List<Employee> employees = mapper.readValue(result.getResponse().getContentAsString(), new TypeReference<List<Employee>>(){});
-		assertEquals(1,employees.size());
-		assertEquals(savedEmployee,employees.get(0));
-		
+		result = mockMvc
+				.perform(get("/api/employee").contentType("application/json").accept("application/json")
+						.content(mapper.writeValueAsString(employee)))
+				.andDo(print()).andExpect(status().isOk()).andReturn();
+		List<Employee> employees = mapper.readValue(result.getResponse().getContentAsString(),
+				new TypeReference<List<Employee>>() {
+				});
+		assertEquals(1, employees.size());
+		assertEquals(savedEmployee, employees.get(0));
+
 		// Get one
 		result = mockMvc.perform(get("/api/employee/" + id)).andDo(print()).andExpect(status().isOk()).andReturn();
-		Employee getEmployee = mapper.readValue(result.getResponse().getContentAsString(),Employee.class);
-		assertEquals(savedEmployee,getEmployee);
-		
+		Employee getEmployee = mapper.readValue(result.getResponse().getContentAsString(), Employee.class);
+		assertEquals(savedEmployee, getEmployee);
+
 		// Delete
 		mockMvc.perform(delete("/api/employee/" + id)).andDo(print()).andExpect(status().isOk());
-	
+
 		// Verify delete with get one
 		mockMvc.perform(get("/api/employee/" + id)).andDo(print()).andExpect(status().isNotFound());
 	}
