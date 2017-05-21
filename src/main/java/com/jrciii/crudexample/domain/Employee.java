@@ -7,17 +7,16 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.annotation.Id;
 import org.springframework.format.annotation.DateTimeFormat;
 
 public class Employee {
 	@Id
 	public String id;
-	
+
 	@NotNull
 	public String firstName;
-	
+
 	@NotNull
 	public String lastName;
 
@@ -47,9 +46,9 @@ public class Employee {
 
 	@NotNull
 	public boolean active;
-	
+
 	public Employee() {
-		
+
 	}
 
 	public Employee(String id, String firstName, String lastName, String middleInitial, String emailAddress,
