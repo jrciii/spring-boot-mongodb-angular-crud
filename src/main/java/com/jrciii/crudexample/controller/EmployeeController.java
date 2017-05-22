@@ -52,6 +52,7 @@ public class EmployeeController {
 			return new ResponseEntity<Employee>(HttpStatus.NOT_FOUND);
 		}
 		BeanUtils.copyProperties(updatedEmployee, employee);
+		employee.setId(id);
 		updatedEmployee = employeeRepository.save(employee);
 		return new ResponseEntity<Employee>(updatedEmployee, HttpStatus.OK);
 	}

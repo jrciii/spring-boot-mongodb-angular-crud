@@ -71,21 +71,23 @@ public class EmployeeCrudIntegrationTest {
 						.content(mapper.writeValueAsString(employee)))
 				.andDo(print()).andExpect(status().isOk()).andReturn();
 		Employee savedEmployee = mapper.readValue(result.getResponse().getContentAsString(), Employee.class);
-		assertNotNull(savedEmployee.id);
-		String id = savedEmployee.id;
-		savedEmployee.id = null;
+		assertNotNull(savedEmployee.getId());
+		String id = savedEmployee.getId();
+		savedEmployee.setId(null);
 		assertEquals(employee, savedEmployee);
 
 		// Put
-		employee.addressTwo = "#2";
+		employee.setAddressTwo("#2");
 		result = mockMvc
 				.perform(put("/api/employee/" + id).contentType("application/json").accept("application/json")
 						.content(mapper.writeValueAsString(employee)))
 				.andDo(print()).andExpect(status().isOk()).andReturn();
 		savedEmployee = mapper.readValue(result.getResponse().getContentAsString(), Employee.class);
-		assertNotNull(savedEmployee.id);
-		assertEquals(id, savedEmployee.id);
-
+		assertNotNull(savedEmployee.getId());
+		assertEquals(id, savedEmployee.getId());
+		savedEmployee.setId(null);
+		assertEquals(employee,savedEmployee);
+		
 		// Get all
 		result = mockMvc
 				.perform(get("/api/employee").contentType("application/json").accept("application/json")
@@ -95,6 +97,7 @@ public class EmployeeCrudIntegrationTest {
 				new TypeReference<List<Employee>>() {
 				});
 		assertEquals(1, employees.size());
+		savedEmployee.setId(id);
 		assertEquals(savedEmployee, employees.get(0));
 
 		// Get one

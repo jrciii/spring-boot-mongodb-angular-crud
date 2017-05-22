@@ -12,40 +12,40 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 public class Employee {
 	@Id
-	public String id;
+	private String id;
 
 	@NotNull
-	public String firstName;
+	private String firstName;
 
 	@NotNull
-	public String lastName;
+	private String lastName;
 
-	public String middleInitial;
+	private String middleInitial;
 
 	@Email
-	public String emailAddress;
+	private String emailAddress;
 
 	@Pattern(regexp = "(^$|[0-9]{10})")
-	public String phoneNumber;
+	private String phoneNumber;
 
-	public EmployeePositionCategory positionCategory;
+	private EmployeePositionCategory positionCategory;
 
 	@DateTimeFormat
-	public Date dateHired;
+	private Date dateHired;
 
-	public String addressOne;
+	private String addressOne;
 
-	public String addressTwo;
+	private String addressTwo;
 
-	public String city;
+	private String city;
 
-	public State state;
+	private State state;
 
 	@Digits(fraction = 0, integer = 5)
-	public Integer zipCode;
+	private Integer zipCode;
 
 	@NotNull
-	public boolean active;
+	private boolean active;
 
 	public Employee() {
 
@@ -67,6 +67,118 @@ public class Employee {
 		this.city = city;
 		this.state = state;
 		this.zipCode = zipCode;
+		this.active = active;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public String getMiddleInitial() {
+		return middleInitial;
+	}
+
+	public void setMiddleInitial(String middleInitial) {
+		this.middleInitial = middleInitial;
+	}
+
+	public String getEmailAddress() {
+		return emailAddress;
+	}
+
+	public void setEmailAddress(String emailAddress) {
+		this.emailAddress = emailAddress;
+	}
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public EmployeePositionCategory getPositionCategory() {
+		return positionCategory;
+	}
+
+	public void setPositionCategory(EmployeePositionCategory positionCategory) {
+		this.positionCategory = positionCategory;
+	}
+
+	public Date getDateHired() {
+		return dateHired;
+	}
+
+	public void setDateHired(Date dateHired) {
+		this.dateHired = dateHired;
+	}
+
+	public String getAddressOne() {
+		return addressOne;
+	}
+
+	public void setAddressOne(String addressOne) {
+		this.addressOne = addressOne;
+	}
+
+	public String getAddressTwo() {
+		return addressTwo;
+	}
+
+	public void setAddressTwo(String addressTwo) {
+		this.addressTwo = addressTwo;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public State getState() {
+		return state;
+	}
+
+	public void setState(State state) {
+		this.state = state;
+	}
+
+	public Integer getZipCode() {
+		return zipCode;
+	}
+
+	public void setZipCode(Integer zipCode) {
+		this.zipCode = zipCode;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
 		this.active = active;
 	}
 
